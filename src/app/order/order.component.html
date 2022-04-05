@@ -1,0 +1,35 @@
+<p-toast></p-toast>
+<div class="container">
+    <div class="row">
+      <div class="col-12">
+        <p-card>
+          <ng-template pTemplate="header">
+              Ultimos pedidos em aberto 
+          </ng-template>
+         
+          <ng-template pTemplate="footer">
+            <p-accordion>
+              <p-accordionTab *ngFor="let item of lastOrders" header="Pedido {{item.id}} | Cliente - {{item.client_name}} ">
+                 <ul>
+                   <li>Codigo:{{item.id}}</li>
+                   <li>Cliente:{{item.cliente_name}}</li>
+                   <li>Total pedido:{{item.total}}</li>
+                   <li>Recebido:{{item.received}}</li>
+                   <li>Troco:{{item.change}}</li>
+                   <li>Status:{{item.status}}</li>
+                   <li>Itens:
+                        <ul>
+                            <li *ngFor="let i of item.itens">{{i.products[0].name}}</li>
+                        </ul>
+                    </li>
+                 </ul>
+                 <button type="button" class="btn btn-secondary" data-dismiss="modal"  (click)="finaly(item.id)">Finalizar</button>
+              </p-accordionTab>
+          </p-accordion>
+       
+          </ng-template>
+      </p-card>
+      </div>
+
+    </div>
+</div>

@@ -1,0 +1,114 @@
+<p-toast></p-toast>
+<div class="container">
+  <br>
+  <br>
+  <br>
+  <br>
+    <div class="row">
+    
+      <div class="col-12">
+        <div class="field col-12 md:col-12">
+          <p-table #dt1  [value]="products" selectionMode="single"  [loading]="loading" [globalFilterFields]="['name','id','sku']" [paginator]="true" [rows]="5" responsiveLayout="scroll" [(selection)]="selectedProduct1" dataKey="id" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Code</th>
+                    <th>Nome</th>
+                    <th>SKU</th>
+                    <th>Preço</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="caption">
+              <div class="flex">
+                  <button pButton label="Limpar filtro" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+                  <span class="p-input-icon-left ml-auto">
+                      <i class="pi pi-search"></i>
+                      <input pInputText type="text" (input)="dt1.filterGlobal($any($event.target).value, 'contains')" placeholder="Search keyword" />
+                  </span>
+              </div>
+          </ng-template>
+            <ng-template pTemplate="body" let-product>
+                <tr [pSelectableRow]="product">
+                    <td>{{product.id}}</td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.sku}}</td>
+                    <td>{{product.price}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+        </div>
+      </div>
+    </div>
+    <hr>
+  <form [formGroup]="formOrder">
+    <div class="row">
+      
+        <div class=" col-3 md:col-3">
+            <span class="p-float-label p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input type="text" id="inputtext-left" pInputText formControlName="client_name"  > 
+                <label for="inputtext-left">Nome do cliente</label>
+                <span
+                *ngIf="!formOrder.controls['client_name'].valid && (formOrder.controls['client_name'].dirty || formOrder.controls['client_name'].touched)">
+                Campo <strong>obrigatório</strong>
+              </span>
+            </span>
+        </div>
+        <div class=" col-4 md:col-4">
+          <span class="p-float-label p-input-icon-left">
+              <i class="pi pi-dollar"></i>
+              <input type="text" id="received" currencyMask  (ngModelChange)="calChange()" pInputText formControlName="received"  > 
+              <label for="inputtext-left">Recebido</label>
+              <span
+              *ngIf="!formOrder.controls['client_name'].valid && (formOrder.controls['client_name'].dirty || formOrder.controls['client_name'].touched)">
+              Campo <strong>obrigatório</strong>
+            </span>
+          </span>
+      </div>
+        <div class="col-2 md:col-2">
+          <button pButton type="button"  class="p-button-text">Total - {{total}}</button>
+        </div>
+        <div class="col-2 md:col-2">
+          <button pButton type="button"  class="p-button-warning p-button-text ">Troco - {{change}}</button>
+        </div>
+        <hr>
+        <div class="col-6 md:col-6">
+          <button pButton type="button" label="Confirmar Pedido" (click)="addOrder()"></button>
+        </div>
+      
+    </div>
+  </form>
+
+
+</div>
+
+
+<div   class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">INFORME A QUANTIDADE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="display">
+        <div class="row" >
+          <hr>
+          <div class="col-12">
+            <div class="field col-12 md:col-12">
+                <span class=" p-input-icon-left">
+                  <label for="inputtext">{{selectedProduct1.name}}</label> - 
+                    <input type="number" id="qtd" value="0" name="qtd" pInputText (change)="setItemQtd($event)"> 
+                    
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="confirm()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
